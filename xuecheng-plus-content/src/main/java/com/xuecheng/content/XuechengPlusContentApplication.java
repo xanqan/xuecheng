@@ -3,7 +3,7 @@ package com.xuecheng.content;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.xuecheng.content", "com.xuecheng.base"})
 public class XuechengPlusContentApplication {
 
     public static void main(String[] args) {

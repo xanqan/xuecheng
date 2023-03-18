@@ -1,17 +1,17 @@
-server:
-  servlet:
-    context-path: /content
-  port: 63040
 #微服务配置
 spring:
   application:
-    name: content
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.1.108:3306/xcplus_content
-    username: root
-    password: 123456
-
-# 日志文件配置路径
-logging:
-  config: classpath:log4j2-dev.xml
+    name: content-api
+  cloud:
+    nacos:
+      server-addr: 192.168.1.108:8848
+      discovery:
+        namespace: dev
+        group: xuecheng-plus-project
+      config:
+        namespace: dev
+        group: xuecheng-plus-project
+        file-extension: yaml
+        refresh-enabled: true
+  profiles:
+    active: dev
