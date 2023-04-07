@@ -9,8 +9,10 @@ import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseService;
+import com.xuecheng.content.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +33,7 @@ public class CourseBaseInfoController {
 
     @ApiOperation("课程查询接口")
     @PostMapping("/course/list")
+    @PreAuthorize("hasAuthority('xc_teachmanager_course_list')")
     public PageResult<CourseBase> list(PageParams pageParams, @RequestBody QueryCourseParamsDto queryCourseParams) {
         return courseBaseService.queryCourseBaseList(pageParams, queryCourseParams);
     }
@@ -44,11 +47,24 @@ public class CourseBaseInfoController {
         return courseBaseService.createCourseBase(companyId, addCourseDto);
     }
 
+//    @ApiOperation("根据课程id查询课程基础信息")
+//    @GetMapping("/course/{courseId}")
+//    public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId) {
+//        return courseBaseService.getCourseBaseInfo(courseId);
+//    }
+
     @ApiOperation("根据课程id查询课程基础信息")
     @GetMapping("/course/{courseId}")
-    public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId) {
+    public CourseBaseInfoDto getCourseBaseById(@PathVariable("courseId") Long courseId) {
+        //取出当前用户身份
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println(principal);
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        System.out.println(user);
+
         return courseBaseService.getCourseBaseInfo(courseId);
     }
+
 
     @ApiOperation("修改课程基础信息")
     @PutMapping("/course")
@@ -57,4 +73,5 @@ public class CourseBaseInfoController {
         Long companyId = 1232141425L;
         return courseBaseService.updateCourseBase(companyId, editCourseDto);
     }
+
 }
